@@ -33,4 +33,15 @@ class AchievementController extends Controller
 
         return response()->json($result);
     }
+
+    public function history(Request $request, int $id): JsonResponse
+    {
+        $player = User::findOrFail($id);
+
+        $history = PlayerAchievement::where('player_id', $player->id)
+            ->orderBy('unlocked_at')
+            ->get(['achievement_key', 'unlocked_at']);
+
+        return response()->json($history);
+    }
 }
